@@ -3,7 +3,7 @@ import RPi.GPIO as GPIO
 
 class TCRT5000:
     def __init__(self, sensor_pin: int = 17) -> None:
-        self.__sensor_pint = sensor_pin
+        self.__sensor_pin = sensor_pin
 
         # Set up the GPIO mode (BCM or BOARD)
         GPIO.setmode(GPIO.BCM)
@@ -14,7 +14,7 @@ class TCRT5000:
     def get_sensor_reading(self) -> int:
         """If the reading is 1, it detected something"""
 
-        return GPIO.input(self.__sensor_pint)
+        return GPIO.input(self.__sensor_pin)
 
     def __del__(self):
         GPIO.cleanup()
