@@ -15,3 +15,6 @@ class TCRT5000:
         """If the reading is 1, it detected something"""
 
         return GPIO.input(self.__sensor_pint)
+
+    def __del__(self):
+        GPIO.cleanup()
