@@ -1,1 +1,1 @@
-from max30102 import MAX30102
+from .max30102 import MAX30102
