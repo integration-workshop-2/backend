@@ -1,5 +1,5 @@
 from .hrcalc import calc_hr_and_spo2
-from models.max30102_response import MAX30102_response
+from .models.max30102_response import MAX30102_response
 from time import sleep
 import smbus
 
