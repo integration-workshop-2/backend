@@ -1,7 +1,8 @@
+from hrcalc import calc_hr_and_spo2
+from models.max30102_response import MAX30102_response
 from time import sleep
 import smbus
-import hrcalc
-from models.max30102_response import MAX30102_response
+
 
 # register addresses
 REG_INTR_STATUS_1 = 0x00
@@ -160,7 +161,7 @@ class MAX30102:
         red, ir = self.read_sequential()
 
         # Calculate heart rate and SpO2
-        hr, hr_valid, spo2, spo2_valid = hrcalc.calc_hr_and_spo2(ir, red)
+        hr, hr_valid, spo2, spo2_valid = calc_hr_and_spo2(ir, red)
 
         # Check if valid readings are obtained
         if hr_valid and spo2_valid:
