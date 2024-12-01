@@ -1,9 +1,7 @@
-# -*-coding:utf-8-*-
-
-# this code is currently for python 2.7
-from __future__ import print_function
 from time import sleep
 import smbus
+import hrcalc
+from models.max30102_response import MAX30102_response
 
 # register addresses
 REG_INTR_STATUS_1 = 0x00
@@ -35,10 +33,10 @@ REG_REV_ID = 0xFE
 REG_PART_ID = 0xFF
 
 
-class MAX30102():
+class MAX30102:
     # by default, this assumes that the device is at 0x57 on channel 1
     def __init__(self, channel=1, address=0x57):
-        #print("Channel: {0}, address: {1}".format(channel, address))
+        # print("Channel: {0}, address: {1}".format(channel, address))
         self.address = address
         self.channel = channel
         self.bus = smbus.SMBus(self.channel)
@@ -73,7 +71,7 @@ class MAX30102():
         # INTR setting
         # 0xc0 : A_FULL_EN and PPG_RDY_EN = Interrupt will be triggered when
         # fifo almost full & new fifo data ready
-        self.bus.write_i2c_block_data(self.address, REG_INTR_ENABLE_1, [0xc0])
+        self.bus.write_i2c_block_data(self.address, REG_INTR_ENABLE_1, [0xC0])
         self.bus.write_i2c_block_data(self.address, REG_INTR_ENABLE_2, [0x00])
 
         # FIFO_WR_PTR[4:0]
@@ -85,7 +83,7 @@ class MAX30102():
 
         # 0b 0100 1111
         # sample avg = 4, fifo rollover = false, fifo almost full = 17
-        self.bus.write_i2c_block_data(self.address, REG_FIFO_CONFIG, [0x4f])
+        self.bus.write_i2c_block_data(self.address, REG_FIFO_CONFIG, [0x4F])
 
         # 0x02 for read-only, 0x03 for SpO2 mode, 0x07 multimode LED
         self.bus.write_i2c_block_data(self.address, REG_MODE_CONFIG, [led_mode])
@@ -98,7 +96,7 @@ class MAX30102():
         # choose value for ~7mA for LED2
         self.bus.write_i2c_block_data(self.address, REG_LED2_PA, [0x24])
         # choose value fro ~25mA for Pilot LED
-        self.bus.write_i2c_block_data(self.address, REG_PILOT_PA, [0x7f])
+        self.bus.write_i2c_block_data(self.address, REG_PILOT_PA, [0x7F])
 
     # this won't validate the arguments!
     # use when changing the values from default
@@ -156,3 +154,16 @@ class MAX30102():
                 count -= 1
 
         return red_buf, ir_buf
+
+    # Update:
+    def get_heart_rate_and_spo2_level(self) -> MAX30102_response | None:
+        red, ir = self.read_sequential()
+
+        # Calculate heart rate and SpO2
+        hr, hr_valid, spo2, spo2_valid = hrcalc.calc_hr_and_spo2(ir, red)
+
+        # Check if valid readings are obtained
+        if hr_valid and spo2_valid:
+            return MAX30102_response(heart_rate=hr, spo2_level=spo2)
+        else:
+            return MAX30102_response()
