@@ -31,5 +31,5 @@ class Motor:
                     GPIO.output(self.__control_pins[j], self.__half_step_sequence[i][j])
                 time.sleep(0.001)
 
-    def __del__(self):
+    def __del__(self) -> None:
         GPIO.cleanup()

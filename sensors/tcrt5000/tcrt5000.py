@@ -16,5 +16,5 @@ class TCRT5000:
 
         return GPIO.input(self.__sensor_pin)
 
-    def __del__(self):
+    def __del__(self) -> None:
         GPIO.cleanup()
