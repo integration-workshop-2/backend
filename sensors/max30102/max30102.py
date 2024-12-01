@@ -165,6 +165,6 @@ class MAX30102:
 
         # Check if valid readings are obtained
         if hr_valid and spo2_valid:
-            return MAX30102_response(heart_rate=hr, spo2_level=spo2)
+            return MAX30102_response(heart_rate=round(hr, 2), spo2_level=round(spo2, 2))
         else:
             return MAX30102_response()
