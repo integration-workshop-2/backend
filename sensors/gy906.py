@@ -9,7 +9,7 @@ class GY906:
         self.__mlx = adafruit_mlx90614.MLX90614(self.__i2c)
 
     def get_target_temperature(self) -> float:
-        return self.__mlx.object_temperature
+        return round(self.__mlx.object_temperature, 2)
 
     def get_ambient_temperature(self) -> float:
-        return self.__mlx.ambient_temperature
+        return round(self.__mlx.ambient_temperature, 2)
