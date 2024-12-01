@@ -1,0 +1,2 @@
+Adafruit-Blinka==8.50.0
+adafruit-circuitpython-mlx90614==1.2.19
