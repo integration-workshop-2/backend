@@ -1,6 +1,6 @@
+import adafruit_mlx90614
 import board
 import busio as io
-import adafruit_mlx90614
 
 
 class GY906:
