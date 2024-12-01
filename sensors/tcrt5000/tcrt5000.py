@@ -12,6 +12,6 @@ class TCRT5000:
         GPIO.setup(sensor_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
     def get_sensor_reading(self) -> int:
-        """If the reading is 0, it detected something"""
+        """If the reading is 1, it detected something"""
 
         return GPIO.input(self.__sensor_pint)
