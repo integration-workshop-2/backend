@@ -1,0 +1,78 @@
+CREATE DATABASE IF NOT EXISTS eca;
+
+
+CREATE TABLE IF NOT EXISTS admin_password(
+    password VARCHAR(255) PRIMARY KEY,
+    created_at TIMESTAMP, 
+    updated_at TIMESTAMP
+);
+
+
+CREATE TABLE IF NOT EXISTS patient(
+    id CHAR(36) PRIMARY KEY, 
+    name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL, 
+    updated_at TIMESTAMP NOT NULL
+);
+
+
+CREATE TABLE IF NOT EXISTS patient_faces(
+    id CHAR(36) PRIMARY KEY,
+    patient_id CHAR(36) NOT NULL,
+    face_embedding BLOB NOT NULL,
+    created_at TIMESTAMP NOT NULL, 
+    updated_at TIMESTAMP NOT NULL,
+    FOREIGN KEY (patient_id) REFERENCES patient(id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS medicine(
+    id CHAR(36) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    cylinder_number TINYINT UNSIGNED NOT NULL,
+    created_at TIMESTAMP NOT NULL, 
+    updated_at TIMESTAMP NOT NULL
+);
+
+
+CREATE TABLE IF NOT EXISTS routine(
+    id CHAR(36) PRIMARY KEY,
+    patient_id CHAR(36),
+    medicine_id CHAR(36),
+    medicine_quantity INT UNSIGNED,
+    week_day ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL,
+    day_time TIME NOT NULL,
+    created_at TIMESTAMP NOT NULL, 
+    updated_at TIMESTAMP NOT NULL,
+    FOREIGN KEY (patient_id) REFERENCES patient(id) ON DELETE CASCADE,
+    FOREIGN KEY (medicine_id) REFERENCES medicine(id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS patients_vital_signals(
+    id CHAR(36) PRIMARY KEY,
+    patient_id CHAR(36),
+    bpm TINYINT UNSIGNED,
+    oxygenation_percentage TINYINT UNSIGNED,
+    created_at TIMESTAMP NOT NULL, 
+    updated_at TIMESTAMP NOT NULL,
+    FOREIGN KEY (patient_id) REFERENCES patient(id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS alarms(
+    id CHAR(36) PRIMARY KEY,
+    patients_vital_signals_id CHAR(36),
+    created_at TIMESTAMP NOT NULL, 
+    updated_at TIMESTAMP NOT NULL,
+    FOREIGN KEY (patients_vital_signals_id) REFERENCES patients_vital_signals(id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS non_recognized_patients(
+    id CHAR(36) PRIMARY KEY,
+    patient_id CHAR(36),
+    created_at TIMESTAMP NOT NULL, 
+    updated_at TIMESTAMP NOT NULL,
+    FOREIGN KEY (patient_id) REFERENCES patient(id) ON DELETE CASCADE
+);
