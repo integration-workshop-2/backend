@@ -4,7 +4,7 @@ from sensors.tcrt5000 import TCRT5000
 
 gy906 = GY906()
 max30102 = MAX30102()
-tcrt5000 = TCRT5000()
+tcrt5000 = TCRT5000(sensor_pin=5)
 
 while True:
     print(f"Ambient temperature: {gy906.get_ambient_temperature()} °C")
