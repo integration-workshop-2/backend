@@ -4,6 +4,7 @@ from infra.repo.non_recognized_patients_repository import (
     NonRecognizedPatientsRepository,
 )
 from infra.repo.patient_repository import PatientRepository
+from infra.repo.patients_vital_signs_repository import PatientsVitalSignsRepository
 
 if __name__ == "__main__":
     pass
