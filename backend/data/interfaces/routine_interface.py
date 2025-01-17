@@ -19,11 +19,19 @@ class RoutineInterface(ABC):
         raise Exception("Method not implemented")
 
     @abstractmethod
-    def delete_routine(cld, id: str) -> RoutineModel:
+    def delete_routine(cls, id: str) -> RoutineModel:
+        raise Exception("Method not implemented")
+
+    @abstractmethod
+    def delete_routine_by_patient_id(cls, patient_id: str) -> List[RoutineModel]:
         raise Exception("Method not implemented")
 
     @abstractmethod
     def get_routine(cls, id: str) -> RoutineModel:
+        raise Exception("Method not implemented")
+
+    @abstractmethod
+    def list_routines_by_patient_id(self, patient_id: str) -> List[RoutineModel]:
         raise Exception("Method not implemented")
 
     @abstractmethod

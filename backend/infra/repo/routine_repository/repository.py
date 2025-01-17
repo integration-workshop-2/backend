@@ -30,7 +30,7 @@ class RoutineRepository(RoutineInterface):
         cursor = db_connection.cursor()
 
         query = """
-            INSERT INTO medicine
+            INSERT INTO routine
             (id, patient_id, medicine_id, medicine_quantity, week_day, day_time, routine_description, created_at, updated_at)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
         """
@@ -93,12 +93,34 @@ class RoutineRepository(RoutineInterface):
             id=id,
             patient_id=entity_instance.patient_id,
             medicine_id=entity_instance.medicine_id,
-            medicine_quantity=entity_instance.medicine_quantity,
+            medicine_quantity=entity_instance.medicine_id,
             week_day=entity_instance.week_day,
             day_time=entity_instance.day_time,
+            routine_description=entity_instance.routine_description,
             created_at=entity_instance.created_at,
             updated_at=entity_instance.updated_at,
         )
+
+    def delete_routine_by_patient_id(self, patient_id: str) -> List[RoutineModel]:
+        db_connection = self.db_connection_instace().get_connection()
+        cursor = db_connection.cursor()
+
+        entity_instances = self.list_routines_by_patient_id(patient_id=patient_id)
+
+        query = """
+            DELETE FROM routine
+            WHERE patient_id = %s;
+        """
+
+        values = (patient_id,)
+
+        cursor.execute(query, values)
+        db_connection.commit()
+
+        cursor.close()
+        db_connection.close()
+
+        return entity_instances
 
     def get_routine(self, id: str) -> RoutineModel:
         db_connection = self.db_connection_instace().get_connection()
@@ -106,7 +128,7 @@ class RoutineRepository(RoutineInterface):
 
         query = """
             SELECT id, patient_id, medicine_id, medicine_quantity, week_day, day_time, routine_description, created_at, updated_at
-            FROM medicine
+            FROM routine
             WHERE id = %s;
         """
 
@@ -127,7 +149,7 @@ class RoutineRepository(RoutineInterface):
         cursor = db_connection.cursor()
 
         query = """
-            SELECT patient_name, routine_descripton
+            SELECT p.name, r.routine_description
             FROM routine r
             INNER JOIN patient p
             ON r.patient_id = p.id
@@ -147,9 +169,11 @@ class RoutineRepository(RoutineInterface):
                 query += "AND r.routine_description LIKE %s"
 
             else:
-                query += "r.routine_description LIKE %s"
+                query += "WHERE r.routine_description LIKE %s"
 
             values.append(routine_description)
+
+        query += ";"
 
         cursor.execute(query, values)
         query_data = cursor.fetchall()
@@ -160,6 +184,31 @@ class RoutineRepository(RoutineInterface):
         routine_data_model_list: List[RoutineDataModel] = []
         for query_data_item in query_data:
             model = RoutineDataModel(*query_data_item)
+            routine_data_model_list.append(model)
+
+        return routine_data_model_list
+
+    def list_routines_by_patient_id(self, patient_id: str) -> List[RoutineModel]:
+        db_connection = self.db_connection_instace().get_connection()
+        cursor = db_connection.cursor()
+
+        query = """
+            SELECT id, patient_id, medicine_id, medicine_quantity, week_day, day_time, routine_description, created_at, updated_at
+            FROM routine
+            WHERE patient_id = %s;
+        """
+
+        values = (patient_id,)
+
+        cursor.execute(query, values)
+        query_data = cursor.fetchall()
+
+        cursor.close()
+        db_connection.close()
+
+        routine_data_model_list: List[RoutineModel] = []
+        for query_data_item in query_data:
+            model = RoutineModel(*query_data_item)
             routine_data_model_list.append(model)
 
         return routine_data_model_list
@@ -180,7 +229,7 @@ class RoutineRepository(RoutineInterface):
         entity_instance = self.get_routine(id=id)
 
         query = """
-            UPDATE medicine
+            UPDATE routine
             SET id = %s,
             medicine_id = %s,
             medicine_quantity = %s,
@@ -220,6 +269,7 @@ class RoutineRepository(RoutineInterface):
             medicine_quantity=medicine_quantity,
             week_day=week_day,
             day_time=day_time,
+            routine_description=routine_description,
             created_at=entity_instance.created_at,
             updated_at=updated_at,
         )
