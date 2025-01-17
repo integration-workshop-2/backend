@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS patient(
 CREATE TABLE IF NOT EXISTS patient_faces(
     id CHAR(36) PRIMARY KEY,
     patient_id CHAR(36) NOT NULL,
-    face_embedding BLOB NOT NULL,
+    face_embedding TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL, 
     updated_at TIMESTAMP NOT NULL,
     FOREIGN KEY (patient_id) REFERENCES patient(id) ON DELETE CASCADE
