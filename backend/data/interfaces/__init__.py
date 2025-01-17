@@ -4,4 +4,5 @@ from .medicine_interface import MedicineInterface
 from .non_recognized_patients_interface import NonRecognizedPatientsInterface
 from .patient_interface import PatientInterface
 from .patient_faces_interface import PatientFacesInterface
-from .patients_vital_signs_interface import PatientsVitalSignsModel
+from .patients_vital_signs_interface import PatientsVitalSignalsInterface
+from .routine_interface import RoutineInterface

@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS routine(
     medicine_quantity INT UNSIGNED,
     week_day ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL,
     day_time TIME NOT NULL,
+    routine_description TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL, 
     updated_at TIMESTAMP NOT NULL,
     FOREIGN KEY (patient_id) REFERENCES patient(id) ON DELETE CASCADE,
