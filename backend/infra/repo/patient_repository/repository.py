@@ -77,7 +77,7 @@ class PatientRepository(PatientInterface):
 
         query = """
             SELECT id, name, created_at, updated_at
-            FROM medicine
+            FROM patient
             WHERE id = %s;
         """
 
@@ -103,6 +103,7 @@ class PatientRepository(PatientInterface):
             values = None
 
         else:
+            name = f"%{name}%"
             query = """
                 SELECT id, name, created_at, updated_at
                 FROM patient
