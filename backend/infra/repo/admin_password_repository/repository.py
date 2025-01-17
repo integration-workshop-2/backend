@@ -9,10 +9,10 @@ class AdminPasswordRepository(AdminPasswordInterface):
 
     @classmethod
     def db_connection_instace(cls):
-        if not AdminPasswordRepository.__db_connection:
-            AdminPasswordRepository.__db_connection = DBConnectionHandler()
+        if not cls.__db_connection:
+            cls.__db_connection = DBConnectionHandler()
 
-        return AdminPasswordRepository.__db_connection
+        return cls.__db_connection
 
     def get_admin_password(self) -> AdminPasswordModel:
         db_connection = self.db_connection_instace().get_connection()

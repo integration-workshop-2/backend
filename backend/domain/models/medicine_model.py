@@ -2,7 +2,9 @@ from datetime import datetime
 from typing import NamedTuple
 
 
-class AdminPasswordModel(NamedTuple):
-    password: str
+class MedicineModel(NamedTuple):
+    id: str
+    name: str
+    cylinder_number: int
     created_at: datetime
     updated_at: datetime
