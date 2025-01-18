@@ -55,7 +55,8 @@ class AlarmsRepository(AlarmsInterface):
             INNER JOIN patients_vital_signs pvs
             ON a.patient_vital_signs_id = pvs.id
             INNER JOIN patient p
-            ON pvs.patient_id = p.id;
+            ON pvs.patient_id = p.id
+            ORDER BY a.created_at DESC;
         """
 
         cursor.execute(query)
