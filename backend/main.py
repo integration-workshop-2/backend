@@ -1,13 +1,14 @@
-from data.use_cases.patient.create_patient import (
-    CreatePatientUseCase,
+from data.use_cases.patient.update_patient import (
+    UpdatePatientUseCase,
 )
-from data.parameters.patient.create_patient import (
-    CreatePatientParameter,
+from data.parameters.patient.update_patient import (
+    UpdatePatientParameter,
 )
 
 if __name__ == "__main__":
-    use_case = CreatePatientUseCase()
-    parameter = CreatePatientParameter(
-        name="joao", face_embeddings=[[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]]
+    use_case = UpdatePatientUseCase()
+    parameter = UpdatePatientParameter(
+        patient_id="9d5fdde4-c876-41e6-898e-615a595facc3",
+        name="joao h",
     )
     print(use_case.execute(parameter=parameter))
