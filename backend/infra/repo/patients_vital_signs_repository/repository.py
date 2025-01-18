@@ -49,6 +49,25 @@ class PatientsVitalSignsRepository(PatientsVitalSignalsInterface):
             updated_at=updated_at,
         )
 
+    def get_patient_vital_signs(self, id: str) -> PatientsVitalSignsModel:
+        db_connection = self.db_connection_instace().get_connection()
+        cursor = db_connection.cursor()
+
+        query = """
+            SELECT id, patient_id, bpm, oxygenation_percentage, created_at, updated_at
+            FROM patients_vital_signs
+            WHERE id = %s;
+        """
+        values = (id,)
+
+        cursor.execute(query, values)
+        query_data = cursor.fetchone()
+
+        cursor.close()
+        db_connection.close()
+
+        return PatientsVitalSignsModel(*query_data)
+
     def list_patients_vital_signs(
         self, patient_id: str
     ) -> List[PatientsVitalSignsModel]:

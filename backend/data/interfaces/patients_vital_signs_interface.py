@@ -11,6 +11,10 @@ class PatientsVitalSignalsInterface(ABC):
         raise Exception("Method not implemented")
 
     @abstractmethod
+    def get_patient_vital_signs(cls, id: str) -> PatientsVitalSignsModel:
+        raise Exception("Method not implemented")
+
+    @abstractmethod
     def list_patients_vital_signs(
         cls, patient_id: str
     ) -> List[PatientsVitalSignsModel]:
