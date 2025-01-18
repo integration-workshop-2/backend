@@ -1,5 +1,5 @@
 from data.interfaces.routine_interface import RoutineInterface
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, time, timedelta, timezone
 from domain.models.routine_model import RoutineDataModel, RoutineModel
 from infra.config.db_connection_handler import DBConnectionHandler
 from typing import List, Literal
@@ -24,7 +24,7 @@ class RoutineRepository(RoutineInterface):
         week_day: Literal[
             "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
         ],
-        day_time: datetime,
+        day_time: time,
     ) -> RoutineModel:
         db_connection = self.db_connection_instace().get_connection()
         cursor = db_connection.cursor()
@@ -70,7 +70,7 @@ class RoutineRepository(RoutineInterface):
             updated_at=updated_at,
         )
 
-    def delete_routine(self, id: str) -> RoutineModel:
+    def delete_routine_item(self, id: str) -> RoutineModel:
         db_connection = self.db_connection_instace().get_connection()
         cursor = db_connection.cursor()
 

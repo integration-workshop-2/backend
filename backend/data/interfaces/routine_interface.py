@@ -19,7 +19,7 @@ class RoutineInterface(ABC):
         raise Exception("Method not implemented")
 
     @abstractmethod
-    def delete_routine(cls, id: str) -> RoutineModel:
+    def delete_routine_item(cls, id: str) -> RoutineModel:
         raise Exception("Method not implemented")
 
     @abstractmethod
