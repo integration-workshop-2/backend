@@ -8,14 +8,17 @@ from data.use_cases.medicine.list_available_cylinders.use_case import (
     ListAvailableCylindersUseCase,
 )
 
+from data.use_cases.medicine.list_medicine.use_case import (
+    ListMedicineUseCase,
+)
+
 from data.use_cases.medicine.delete_medicine.use_case import DeleteMedicineUseCase
 from data.parameters.medicine.delete_medicine.parameter import DeleteMedicineParameter
 
 if __name__ == "__main__":
-    use_case = UpdateMedicineUseCase()
-    parameter = UpdateMedicineParameter(
-        medicine_id="d0ef1112-f1ba-4684-816f-2bded98f3f53",
-        name="paracetamol",
-        cylinder_number=1,
-    )
-    print(use_case.execute(parameter=parameter))
+    use_case = CreateMedicineUseCase()
+    parameter = CreateMedicineParameter(name="codein", cylinder_number=3)
+    use_case.execute(parameter=parameter)
+
+    use_case = ListMedicineUseCase()
+    print(use_case.execute())

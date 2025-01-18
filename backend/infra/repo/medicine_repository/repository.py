@@ -99,7 +99,8 @@ class MedicineRepository(MedicineInterface):
 
         query = """
             SELECT id, name, cylinder_number, created_at, updated_at
-            FROM medicine;
+            FROM medicine
+            ORDER BY cylinder_number ASC;
         """
 
         cursor.execute(query)
