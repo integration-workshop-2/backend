@@ -75,7 +75,8 @@ class NonRecognizedPatientsRepository(NonRecognizedPatientsInterface):
 
         query = """
             SELECT id, patient_id, created_at, updated_at
-            FROM non_recognized_patients;
+            FROM non_recognized_patients
+            ORDER BY created_at DESC;
         """
 
         cursor.execute(query)

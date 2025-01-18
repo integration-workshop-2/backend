@@ -37,11 +37,11 @@ if __name__ == "__main__":
     # )
     # print(get_patient_use_case.execute(parameter=get_patient_parameter))
 
-    # use_case = CreateNonRecognizedPatientUseCase()
-    # parameter = CreateNonRecognizedPatientParameter(
-    #     patient_id="4a87c246-bd1e-4086-afb2-84b5e0faba2f"
-    # )
-    # print(use_case.execute(parameter=parameter))
+    use_case = CreateNonRecognizedPatientUseCase()
+    parameter = CreateNonRecognizedPatientParameter(
+        patient_id="4a87c246-bd1e-4086-afb2-84b5e0faba2f"
+    )
+    print(use_case.execute(parameter=parameter))
 
     use_case = ListNonRecognizedPatientsUseCase()
     print(use_case.execute())
