@@ -68,7 +68,7 @@ class PatientsVitalSignsRepository(PatientsVitalSignalsInterface):
 
         return PatientsVitalSignsModel(*query_data)
 
-    def list_patients_vital_signs(
+    def list_patient_vital_signs(
         self, patient_id: str
     ) -> List[PatientsVitalSignsModel]:
         db_connection = self.db_connection_instace().get_connection()
@@ -77,7 +77,8 @@ class PatientsVitalSignsRepository(PatientsVitalSignalsInterface):
         query = """
             SELECT id, patient_id, bpm, oxygenation_percentage, created_at, updated_at
             FROM patients_vital_signs
-            WHERE patient_id = %s;
+            WHERE patient_id = %s
+            ORDER by created_at ASC;
         """
         values = (patient_id,)
 

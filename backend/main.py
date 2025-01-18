@@ -12,6 +12,14 @@ from data.parameters.patients_vital_signs.get_patient_vital_signs.parameter impo
     GetPatientVitalSignsParameter,
 )
 
+from data.use_cases.patients_vital_signs.list_patient_vital_signs.use_case import (
+    ListPatientVitalSignsUseCase,
+)
+from data.parameters.patients_vital_signs.list_patient_vital_signs.parameter import (
+    ListPatientVitalSignsParameter,
+)
+
+
 if __name__ == "__main__":
     # use_case = CreatePatientVitalSignsUseCase()
     # parameter = CreatePatientVitalSignsParameter(
@@ -21,6 +29,8 @@ if __name__ == "__main__":
     # )
     # print(use_case.execute(parameter=parameter))
 
-    use_case = GetPatientVitalSignsUseCase()
-    parameter = GetPatientVitalSignsParameter(id="00756fd5-fb43-4b3d-b725-1507bcccd4bc")
+    use_case = ListPatientVitalSignsUseCase()
+    parameter = ListPatientVitalSignsParameter(
+        patient_id="4a87c246-bd1e-4086-afb2-84b5e0faba2f"
+    )
     print(use_case.execute(parameter=parameter))
