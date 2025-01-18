@@ -2,6 +2,11 @@ from datetime import datetime, time
 from typing import Literal, NamedTuple
 
 
+class RoutineItemDataModel(NamedTuple):
+    patient_name: str
+    routine_description: str
+
+
 class RoutineItemModel(NamedTuple):
     id: str
     routine_id: str

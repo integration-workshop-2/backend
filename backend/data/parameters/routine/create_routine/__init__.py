@@ -1,1 +1,1 @@
-from .parameter import CreateRoutineParameter, RoutineItemParameter
+from .parameter import CreateRoutineParameter

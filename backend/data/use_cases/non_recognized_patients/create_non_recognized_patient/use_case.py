@@ -1,4 +1,4 @@
-from data.parameters.non_recognized_patients.create_non_recognized_patient import (
+from data.parameters.non_recognized_patients.create_non_recognized_patient.parameter import (
     CreateNonRecognizedPatientParameter,
 )
 from infra.repo.non_recognized_patients_repository.repository import (

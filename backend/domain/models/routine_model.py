@@ -7,8 +7,3 @@ class RoutineModel(NamedTuple):
     patient_id: str
     created_at: datetime
     updated_at: datetime
-
-
-class RoutineDataModel(NamedTuple):
-    patient_name: str
-    routine_description: str

@@ -1,4 +1,4 @@
-from data.parameters.patients_vital_signs.create_patient_vital_signs import (
+from data.parameters.patients_vital_signs.create_patient_vital_signs.parameter import (
     CreatePatientVitalSignsParameter,
 )
 from infra.repo.patients_vital_signs_repository.repository import (

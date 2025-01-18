@@ -1,4 +1,4 @@
-from data.parameters.medicine.update_medicine import UpdateMedicineParameter
+from data.parameters.medicine.update_medicine.parameter import UpdateMedicineParameter
 from infra.repo.medicine_repository.repository import MedicineRepository
 from typing import Dict
 

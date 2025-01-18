@@ -1,4 +1,4 @@
-from data.parameters.medicine.delete_medicine import DeleteMedicineParameter
+from data.parameters.medicine.delete_medicine.parameter import DeleteMedicineParameter
 from infra.repo.medicine_repository.repository import MedicineRepository
 from typing import Dict
 

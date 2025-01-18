@@ -1,4 +1,4 @@
-from data.parameters.alarms.create_alarm import CreateAlarmParameter
+from data.parameters.alarms.create_alarm.parameter import CreateAlarmParameter
 from infra.repo.alarms_repository.repository import AlarmsRepository
 from typing import Dict
 

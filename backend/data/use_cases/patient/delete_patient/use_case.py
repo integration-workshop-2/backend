@@ -1,4 +1,4 @@
-from data.parameters.patient.delete_patient import DeletePatientParameter
+from data.parameters.patient.delete_patient.parameter import DeletePatientParameter
 from infra.repo.patient_repository.repository import PatientRepository
 from typing import Dict
 

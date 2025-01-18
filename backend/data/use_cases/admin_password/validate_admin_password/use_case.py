@@ -1,4 +1,4 @@
-from data.parameters.admin_password.validate_admin_password import (
+from data.parameters.admin_password.validate_admin_password.parameter import (
     ValidateAdminPasswordParameter,
 )
 from infra.repo.admin_password_repository.repository import AdminPasswordRepository

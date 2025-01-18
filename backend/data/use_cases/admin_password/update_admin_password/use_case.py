@@ -1,4 +1,4 @@
-from data.parameters.admin_password.update_admin_password import (
+from data.parameters.admin_password.update_admin_password.parameter import (
     UpdateAdminPasswordParameter,
 )
 from infra.repo.admin_password_repository.repository import AdminPasswordRepository

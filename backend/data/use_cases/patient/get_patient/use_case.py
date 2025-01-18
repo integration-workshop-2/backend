@@ -1,4 +1,4 @@
-from data.parameters.patient.get_patient import GetPatientParameter
+from data.parameters.patient.get_patient.parameter import GetPatientParameter
 from infra.repo.patient_repository.repository import PatientRepository
 from typing import Dict
 
