@@ -13,4 +13,4 @@ class UpdateAdminPasswordUseCase:
         response = self.__admin_password_repository.update_admin_password(
             password=parameter.password
         )
-        return response._asdict()
+        return {"success": True, "data": response._asdict()}

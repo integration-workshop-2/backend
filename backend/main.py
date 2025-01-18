@@ -1,11 +1,13 @@
-from data.use_cases.admin_password.validate_admin_password import (
-    ValidateAdminPasswordUseCase,
+from data.use_cases.patient.create_patient import (
+    CreatePatientUseCase,
 )
-from data.parameters.admin_password.validate_admin_password import (
-    ValidateAdminPasswordParameter,
+from data.parameters.patient.create_patient import (
+    CreatePatientParameter,
 )
 
 if __name__ == "__main__":
-    use_case = ValidateAdminPasswordUseCase()
-    parameter = ValidateAdminPasswordParameter(password="4321")
+    use_case = CreatePatientUseCase()
+    parameter = CreatePatientParameter(
+        name="joao", face_embeddings=[[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]]
+    )
     print(use_case.execute(parameter=parameter))
