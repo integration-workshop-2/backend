@@ -5,4 +5,5 @@ from .non_recognized_patients_model import NonRecognizedPatientsModel
 from .patient_faces_model import PatientFacesModel
 from .patient_model import PatientModel
 from .patients_vital_signs_model import PatientsVitalSignsModel
+from .routine_item_model import RoutineItemModel
 from .routine_model import RoutineDataModel, RoutineModel

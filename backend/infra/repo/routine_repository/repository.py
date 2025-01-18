@@ -1,5 +1,7 @@
 from data.interfaces.routine_interface import RoutineInterface
 from datetime import datetime, time, timedelta, timezone
+from domain.models.medicine_model import MedicineModel
+from domain.models.routine_item_model import RoutineItemModel
 from domain.models.routine_model import RoutineDataModel, RoutineModel
 from infra.config.db_connection_handler import DBConnectionHandler
 from typing import List, Literal
@@ -16,33 +18,81 @@ class RoutineRepository(RoutineInterface):
 
         return cls.__db_connection
 
-    def create_routine(
-        self,
-        patient_id: str,
-        medicine_id: str,
-        medicine_quantity: int,
-        week_day: Literal[
-            "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-        ],
-        day_time: time,
-    ) -> RoutineModel:
+    def create_routine(self, patient_id: str) -> RoutineModel:
         db_connection = self.db_connection_instace().get_connection()
         cursor = db_connection.cursor()
 
         query = """
             INSERT INTO routine
-            (id, patient_id, medicine_id, medicine_quantity, week_day, day_time, routine_description, created_at, updated_at)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
+            (id, patient_id, created_at, updated_at)
+            VALUES (%s, %s, %s, %s);
         """
 
         id = str(uuid4())
-        routine_description = 1
         created_at = datetime.now(timezone.utc) - timedelta(hours=3)
         updated_at = datetime.now(timezone.utc) - timedelta(hours=3)
 
         values = (
             id,
             patient_id,
+            created_at,
+            updated_at,
+        )
+
+        cursor.execute(query, values)
+
+        db_connection.commit()
+
+        cursor.close()
+        db_connection.close()
+
+        return RoutineModel(
+            id=id,
+            patient_id=patient_id,
+            created_at=created_at,
+            updated_at=updated_at,
+        )
+
+    def create_routine_item(
+        self,
+        routine_id: str,
+        medicine_id: str,
+        medicine_quantity: int,
+        week_day: Literal[
+            "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+        ],
+        day_time: time,
+    ):
+        db_connection = self.db_connection_instace().get_connection()
+        cursor = db_connection.cursor()
+
+        query = """
+            INSERT INTO routine_items
+            (id, 
+            routine_id, 
+            medicine_id, 
+            medicine_quantity, 
+            week_day, 
+            day_time, 
+            routine_description, 
+            created_at, 
+            updated_at)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
+        """
+
+        id = str(uuid4())
+        routine_description = self.__get_routine_description(
+            medicine_id=medicine_id,
+            medicine_quantity=medicine_quantity,
+            week_day=week_day,
+            day_time=day_time,
+        )
+        created_at = datetime.now(timezone.utc) - timedelta(hours=3)
+        updated_at = datetime.now(timezone.utc) - timedelta(hours=3)
+
+        values = (
+            id,
+            routine_id,
             medicine_id,
             medicine_quantity,
             week_day,
@@ -53,14 +103,15 @@ class RoutineRepository(RoutineInterface):
         )
 
         cursor.execute(query, values)
+
         db_connection.commit()
 
         cursor.close()
         db_connection.close()
 
-        return RoutineModel(
+        return RoutineItemModel(
             id=id,
-            patient_id=patient_id,
+            routine_id=routine_id,
             medicine_id=medicine_id,
             medicine_quantity=medicine_quantity,
             week_day=week_day,
@@ -69,6 +120,52 @@ class RoutineRepository(RoutineInterface):
             created_at=created_at,
             updated_at=updated_at,
         )
+
+    def __get_routine_description(
+        self,
+        medicine_id: str,
+        medicine_quantity: int,
+        week_day: Literal[
+            "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+        ],
+        day_time: time,
+    ):
+        def __get_translated_week_day(week_day: str) -> str:
+            week_days = {
+                "Monday": "Seg",
+                "Tuesday": "Ter",
+                "Wednesday": "Qua",
+                "Thursday": "Qui",
+                "Friday": "Sex",
+                "Saturday": "Sáb",
+                "Sunday": "Dom",
+            }
+
+            return week_days[week_day]
+
+        db_connection = self.db_connection_instace().get_connection()
+        cursor = db_connection.cursor()
+
+        query = """
+            SELECT id, name, cylinder_number, created_at, updated_at
+            FROM medicine
+            WHERE id = %s;
+        """
+
+        values = (medicine_id,)
+
+        cursor.execute(query, values)
+        query_data = cursor.fetchone()
+
+        cursor.close()
+        db_connection.close()
+
+        medicine = MedicineModel(*query_data)
+        translated_week_day = __get_translated_week_day(week_day=week_day)
+
+        routine_description = f"{translated_week_day} {day_time.strftime("%H:%M")} {medicine.name} {medicine_quantity} comp."
+
+        return routine_description
 
     def delete_routine_item(self, id: str) -> RoutineModel:
         db_connection = self.db_connection_instace().get_connection()
