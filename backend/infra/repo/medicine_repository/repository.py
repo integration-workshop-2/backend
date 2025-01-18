@@ -93,7 +93,7 @@ class MedicineRepository(MedicineInterface):
 
         return MedicineModel(*query_data)
 
-    def list_medicine(self) -> MedicineModel:
+    def list_medicine(self) -> List[MedicineModel]:
         db_connection = self.db_connection_instace().get_connection()
         cursor = db_connection.cursor()
 
