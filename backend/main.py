@@ -1,24 +1,9 @@
-from data.use_cases.medicine.create_medicine.use_case import CreateMedicineUseCase
-from data.parameters.medicine.create_medicine.parameter import CreateMedicineParameter
-
-from data.use_cases.medicine.update_medicine.use_case import UpdateMedicineUseCase
-from data.parameters.medicine.update_medicine.parameter import UpdateMedicineParameter
-
-from data.use_cases.medicine.list_available_cylinders.use_case import (
-    ListAvailableCylindersUseCase,
-)
-
-from data.use_cases.medicine.list_medicine.use_case import (
-    ListMedicineUseCase,
-)
-
-from data.use_cases.medicine.delete_medicine.use_case import DeleteMedicineUseCase
-from data.parameters.medicine.delete_medicine.parameter import DeleteMedicineParameter
+from data.use_cases.alarms.create_alarm.use_case import CreateAlarmUseCase
+from data.parameters.alarms.create_alarm.parameter import CreateAlarmParameter
 
 if __name__ == "__main__":
-    use_case = CreateMedicineUseCase()
-    parameter = CreateMedicineParameter(name="codein", cylinder_number=3)
-    use_case.execute(parameter=parameter)
-
-    use_case = ListMedicineUseCase()
-    print(use_case.execute())
+    use_case = CreateAlarmUseCase()
+    parameter = CreateAlarmParameter(
+        patient_vital_signs_id="b11450ac-5f5b-4536-a6c9-23f32ec0a5e3"
+    )
+    print(use_case.execute(parameter=parameter))
