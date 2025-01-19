@@ -1,12 +1,14 @@
-from flask import Flask, request
+from flask import Flask
+from server.routes.admin_password import admin_password_bp
 from server.routes.patient import patient_bp
 
-index = 0
 
 app = Flask(__name__)
 
 app.register_blueprint(patient_bp, url_prefix="/api")
+app.register_blueprint(admin_password_bp, url_prefix="/api")
 
+# index = 0
 # @app.route("/upload", methods=["POST"])
 # def upload_image():
 #     global index
