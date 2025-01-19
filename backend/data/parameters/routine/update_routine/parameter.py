@@ -2,7 +2,7 @@ from datetime import time
 from typing import List, Literal, NamedTuple
 
 
-class RoutineItem(NamedTuple):
+class UpdateRoutineItemParameter(NamedTuple):
     medicine_id: str
     medicine_quantity: int
     week_day: Literal[
@@ -14,4 +14,4 @@ class RoutineItem(NamedTuple):
 class UpdateRoutineParameter(NamedTuple):
     patient_id: str
     routine_id: str
-    routine_items_list: List[RoutineItem]
+    routine_items_list: List[UpdateRoutineItemParameter]

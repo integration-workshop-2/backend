@@ -5,6 +5,7 @@ from server.routes.medicine import medicine_bp
 from server.routes.non_recognized_patients import non_recognized_patients_bp
 from server.routes.patient import patient_bp
 from server.routes.patients_vital_signs import patients_vital_signs_bp
+from server.routes.routine import routine_bp
 
 
 app = Flask(__name__)
@@ -15,6 +16,7 @@ app.register_blueprint(blueprint=medicine_bp, url_prefix="/api")
 app.register_blueprint(blueprint=non_recognized_patients_bp, url_prefix="/api")
 app.register_blueprint(blueprint=patient_bp, url_prefix="/api")
 app.register_blueprint(blueprint=patients_vital_signs_bp, url_prefix="/api")
+app.register_blueprint(blueprint=routine_bp, url_prefix="/api")
 
 # index = 0
 # @app.route("/upload", methods=["POST"])

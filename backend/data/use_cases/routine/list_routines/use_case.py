@@ -15,9 +15,12 @@ class ListRoutinesUseCase:
             routine_description=parameter.routine_description,
         )
 
-        return self.__group_routine_items(
-            routine_items_data_list=routine_items_data_list
-        )
+        return {
+            "sucess": True,
+            "data": self.__group_routine_items(
+                routine_items_data_list=routine_items_data_list
+            ),
+        }
 
     def __group_routine_items(
         self, routine_items_data_list: List[RoutineItemDataModel]

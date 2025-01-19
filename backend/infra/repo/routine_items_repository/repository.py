@@ -79,7 +79,7 @@ class RoutineItemsRepository(RoutineItemsInterface):
             medicine_id=medicine_id,
             medicine_quantity=medicine_quantity,
             week_day=week_day,
-            day_time=day_time,
+            day_time=day_time.strftime("%H:%M"),
             routine_description=routine_description,
             created_at=created_at,
             updated_at=updated_at,

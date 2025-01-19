@@ -1,4 +1,4 @@
-from datetime import datetime, time
+from datetime import datetime
 from typing import Literal, NamedTuple
 
 
@@ -17,7 +17,7 @@ class RoutineItemModel(NamedTuple):
     week_day: Literal[
         "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
     ]
-    day_time: time
+    day_time: str
     routine_description: str
     created_at: datetime
     updated_at: datetime
