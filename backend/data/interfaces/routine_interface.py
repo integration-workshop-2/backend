@@ -1,8 +1,5 @@
 from abc import ABC, abstractmethod
-from datetime import datetime, time
-from domain.models.routine_item_model import RoutineItemModel
-from domain.models.routine_model import RoutineDataModel, RoutineModel
-from typing import List, Literal
+from domain.models.routine_model import RoutineModel
 
 
 class RoutineInterface(ABC):
