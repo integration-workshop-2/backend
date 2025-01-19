@@ -3,7 +3,9 @@ from typing import Literal, NamedTuple
 
 
 class RoutineItemDataModel(NamedTuple):
+    patient_id: str
     patient_name: str
+    routine_id: str
     routine_description: str
 
 

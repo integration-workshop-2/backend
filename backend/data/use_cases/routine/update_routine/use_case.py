@@ -24,8 +24,8 @@ class UpdateRoutineUseCase:
                 medicine_quantity=routine_item.medicine_quantity,
                 week_day=routine_item.week_day,
                 day_time=routine_item.day_time,
-            )
-            created_routine_items_list.append(parsed_routine_item._asdict())
+            )._asdict()
+            created_routine_items_list.append(parsed_routine_item)
 
         return {
             "success": True,

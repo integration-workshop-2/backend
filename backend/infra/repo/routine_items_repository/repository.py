@@ -168,7 +168,7 @@ class RoutineItemsRepository(RoutineItemsInterface):
         cursor = db_connection.cursor()
 
         query = """
-            SELECT p.patient_name, ri.routine_description
+            SELECT p.id, p.name, ri.routine_id, ri.routine_description
             FROM routine_items ri
             INNER JOIN routine r
             ON ri.routine_id = r.id
@@ -187,10 +187,10 @@ class RoutineItemsRepository(RoutineItemsInterface):
             routine_description = f"%{routine_description}%"
 
             if values:
-                query += "AND r.routine_description LIKE %s"
+                query += "AND ri.routine_description LIKE %s"
 
             else:
-                query += "WHERE r.routine_description LIKE %s"
+                query += "WHERE ri.routine_description LIKE %s"
 
             values.append(routine_description)
 
@@ -202,7 +202,7 @@ class RoutineItemsRepository(RoutineItemsInterface):
         cursor.close()
         db_connection.close()
 
-        routine_item_data_model_list: List[RoutineItemModel] = []
+        routine_item_data_model_list: List[RoutineItemDataModel] = []
         for query_data_item in query_data:
             routine_item_data_model = RoutineItemDataModel(*query_data_item)
             routine_item_data_model_list.append(routine_item_data_model)
