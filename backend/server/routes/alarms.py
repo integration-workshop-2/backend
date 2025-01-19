@@ -3,7 +3,6 @@ from data.use_cases.alarms.create_alarm.use_case import CreateAlarmUseCase
 from data.parameters.alarms.create_alarm.parameter import CreateAlarmParameter
 from data.use_cases.alarms.list_alarms.use_case import ListAlarmsUseCase
 from typing import Dict
-from uuid import UUID
 
 alarms_bp = Blueprint("alarms_bp", __name__)
 
