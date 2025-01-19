@@ -131,37 +131,6 @@ class RoutineItemsRepository(RoutineItemsInterface):
 
         return routine_description
 
-    def delete_routine_item(self, id: str) -> RoutineItemModel:
-        db_connection = self.db_connection_instace().get_connection()
-        cursor = db_connection.cursor()
-
-        entity_instance = self.get_routine_item(id=id)
-
-        query = """
-            DELETE FROM routine_items
-            WHERE id = %s;
-        """
-
-        values = (id,)
-
-        cursor.execute(query, values)
-        db_connection.commit()
-
-        cursor.close()
-        db_connection.close()
-
-        return RoutineItemModel(
-            id=id,
-            routine_id=entity_instance.routine_description,
-            medicine_id=entity_instance.medicine_id,
-            medicine_quantity=entity_instance.medicine_id,
-            week_day=entity_instance.week_day,
-            day_time=entity_instance.day_time,
-            routine_description=entity_instance.routine_description,
-            created_at=entity_instance.created_at,
-            updated_at=entity_instance.updated_at,
-        )
-
     def get_routine_item(self, id: str) -> RoutineItemModel:
         db_connection = self.db_connection_instace().get_connection()
         cursor = db_connection.cursor()
