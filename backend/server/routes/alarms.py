@@ -22,4 +22,4 @@ def create_alarm():
 def list_alarms():
     use_case = ListAlarmsUseCase()
     response = use_case.execute()
-    return jsonify(response), 201
+    return jsonify(response), 200
