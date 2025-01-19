@@ -10,6 +10,7 @@ from data.parameters.patient.list_patients.parameter import ListPatientsParamete
 from data.use_cases.patient.update_patient.use_case import UpdatePatientUseCase
 from data.parameters.patient.update_patient.parameter import UpdatePatientParameter
 from typing import Dict
+from uuid import UUID
 
 patient_bp = Blueprint("patient_bp", __name__)
 
@@ -26,7 +27,7 @@ def create_patient():
 
 
 @patient_bp.route("/patients/<uuid:patient_id>", methods=["DELETE"])
-def delete_patient(patient_id):
+def delete_patient(patient_id: UUID):
     use_case = DeletePatientUseCase()
     parameter = DeletePatientParameter(patient_id=str(patient_id))
     response = use_case.execute(parameter=parameter)
@@ -34,7 +35,7 @@ def delete_patient(patient_id):
 
 
 @patient_bp.route("/patients/<uuid:patient_id>", methods=["GET"])
-def get_patient(patient_id):
+def get_patient(patient_id: UUID):
     use_case = GetPatientUseCase()
     parameter = GetPatientParameter(patient_id=str(patient_id))
     response = use_case.execute(parameter=parameter)
@@ -51,7 +52,7 @@ def list_patients():
 
 
 @patient_bp.route("/patients/<uuid:patient_id>", methods=["PUT"])
-def update_patient(patient_id):
+def update_patient(patient_id: UUID):
     event: Dict = request.json
     use_case = UpdatePatientUseCase()
     parameter = UpdatePatientParameter(
