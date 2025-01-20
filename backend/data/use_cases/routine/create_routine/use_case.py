@@ -11,9 +11,6 @@ class CreateRoutineUseCase:
         self.__routine_items_repository = RoutineItemsRepository()
 
     def execute(self, parameter: CreateRoutineParameter) -> Dict:
-        class FormattedDayTime(TypedDict):
-            day_time: time
-
         created_routine = self.__routine_repository.create_routine(
             patient_id=parameter.patient_id
         )
