@@ -19,9 +19,7 @@ patient_bp = Blueprint("patient_bp", __name__)
 def create_patient():
     event: Dict = request.json
     use_case = CreatePatientUseCase()
-    parameter = CreatePatientParameter(
-        name=event.get("name"), face_embeddings=event.get("face_embeddings")
-    )
+    parameter = CreatePatientParameter(name=event.get("name"))
     response = use_case.execute(parameter=parameter)
     return jsonify(response), 201
 
