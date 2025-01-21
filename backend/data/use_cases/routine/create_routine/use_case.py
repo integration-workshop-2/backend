@@ -1,14 +1,17 @@
-from datetime import time
 from data.parameters.routine.create_routine.parameter import CreateRoutineParameter
+from infra.repo.medicine_repository.repository import MedicineRepository
 from infra.repo.routine_items_repository.repository import RoutineItemsRepository
 from infra.repo.routine_repository.repository import RoutineRepository
-from typing import Dict, TypedDict
+from infra.utils.crontab_util.util import CrontabUtil
+from typing import Dict
 
 
 class CreateRoutineUseCase:
     def __init__(self) -> None:
+        self.__medicine_repository = MedicineRepository()
         self.__routine_repository = RoutineRepository()
         self.__routine_items_repository = RoutineItemsRepository()
+        self.__crontab_service = CrontabUtil()
 
     def execute(self, parameter: CreateRoutineParameter) -> Dict:
         created_routine = self.__routine_repository.create_routine(
@@ -17,7 +20,7 @@ class CreateRoutineUseCase:
 
         created_routine_items_list = []
         for routine_item in parameter.routine_items_list:
-            routine_item = self.__routine_items_repository.create_routine_item(
+            created_routine_item = self.__routine_items_repository.create_routine_item(
                 routine_id=created_routine.id,
                 medicine_id=routine_item.medicine_id,
                 medicine_quantity=routine_item.medicine_quantity,
@@ -25,7 +28,19 @@ class CreateRoutineUseCase:
                 day_time=routine_item.day_time,
             )._asdict()
 
-            created_routine_items_list.append(routine_item)
+            medicine_model = self.__medicine_repository.get_medicine(
+                id=routine_item.medicine_id
+            )
+
+            self.__crontab_service.create_routine_job(
+                routine_id=created_routine.id,
+                cylinder_number=medicine_model.cylinder_number,
+                medicine_quantity=routine_item.medicine_quantity,
+                week_day=routine_item.week_day,
+                day_time=routine_item.day_time,
+            )
+
+            created_routine_items_list.append(created_routine_item)
 
         return {
             "success": True,
