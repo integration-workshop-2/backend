@@ -10,7 +10,7 @@ class PostImageUseCase:
 
         posted_images_folder = (
             Path(__file__).resolve().parent.parent.parent.parent.parent
-            / "server"
+            / "image_data"
             / "posted_images"
         )
         posted_images_folder.mkdir(parents=True, exist_ok=True)
