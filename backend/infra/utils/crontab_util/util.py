@@ -3,6 +3,9 @@ from datetime import time
 
 
 class CrontabUtil:
+    def __init__(self) -> None:
+        self.__cron = CronTab(user=True)
+
     def create_routine_job(
         self,
         routine_id: str,
@@ -24,13 +27,15 @@ class CrontabUtil:
 
             return week_days[week_day]
 
-        cron = CronTab(user=True)
-
         job_command = f"/home/jhcsoares/utfpr/integration_workshop_2/raspberrypi/.venv/bin/python /home/jhcsoares/utfpr/integration_workshop_2/test_routes.py {str(cylinder_number)} {str(medicine_quantity)}"
 
         execution_pattern = f"{str(day_time.minute)} {str(day_time.hour)} * * {get_week_day_number(week_day=week_day)}"
 
-        job = cron.new(command=job_command, comment=routine_id)
+        job = self.__cron.new(command=job_command, comment=routine_id)
         job.setall(execution_pattern)
 
-        cron.write()
+        self.__cron.write()
+
+    def delete_routine_job(self, routine_id: str) -> None:
+        self.__cron.remove_all(comment=routine_id)
+        self.__cron.write()
