@@ -55,8 +55,12 @@ class CrontabUtil:
             if comment in job.comment:
                 self.__cron.remove(job)
 
+        self.__cron.write()
+
     def delete_routine_job_by_patient_id(self, patient_id: str) -> None:
         for job in self.__cron:
             comment = f"patient_id={patient_id}"
             if comment in job.comment:
                 self.__cron.remove(job)
+
+        self.__cron.write()
