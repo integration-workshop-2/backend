@@ -1,5 +1,4 @@
 from data.parameters.routine.update_routine.parameter import UpdateRoutineParameter
-from infra.repo.medicine_repository.repository import MedicineRepository
 from infra.repo.routine_items_repository.repository import RoutineItemsRepository
 from infra.repo.routine_repository.repository import RoutineRepository
 from infra.utils.crontab_util.util import CrontabUtil
@@ -9,13 +8,14 @@ from typing import Dict
 class UpdateRoutineUseCase:
     def __init__(self) -> None:
         self.__crontab_util = CrontabUtil()
-        self.__medicine_repository = MedicineRepository()
         self.__routine_repository = RoutineRepository()
         self.__routine_items_repository = RoutineItemsRepository()
 
     def execute(self, parameter: UpdateRoutineParameter) -> Dict:
         self.__routine_repository.delete_routine(id=parameter.routine_id)
-        self.__crontab_util.delete_routine_job(routine_id=parameter.routine_id)
+        self.__crontab_util.delete_routine_job_by_routine_id(
+            routine_id=parameter.routine_id
+        )
 
         created_routine = self.__routine_repository.create_routine(
             patient_id=parameter.patient_id
@@ -34,9 +34,8 @@ class UpdateRoutineUseCase:
 
             self.__crontab_util.create_routine_job(
                 routine_id=created_routine.id,
-                cylinder_number=self.__medicine_repository.get_medicine(
-                    id=routine_item.medicine_id
-                ).cylinder_number,
+                medicine_id=routine_item.medicine_id,
+                patient_id=parameter.patient_id,
                 medicine_quantity=routine_item.medicine_quantity,
                 week_day=routine_item.week_day,
                 day_time=routine_item.day_time,

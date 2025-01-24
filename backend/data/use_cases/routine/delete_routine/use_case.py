@@ -14,6 +14,8 @@ class DeleteRoutineUseCase:
             id=parameter.routine_id
         )
 
-        self.__crontab_util.delete_routine_job(routine_id=parameter.routine_id)
+        self.__crontab_util.delete_routine_job_by_routine_id(
+            routine_id=parameter.routine_id
+        )
 
         return {"success": True, "data": deleted_routine._asdict()}

@@ -1,5 +1,4 @@
 from data.parameters.routine.create_routine.parameter import CreateRoutineParameter
-from infra.repo.medicine_repository.repository import MedicineRepository
 from infra.repo.routine_items_repository.repository import RoutineItemsRepository
 from infra.repo.routine_repository.repository import RoutineRepository
 from infra.utils.crontab_util.util import CrontabUtil
@@ -8,7 +7,6 @@ from typing import Dict
 
 class CreateRoutineUseCase:
     def __init__(self) -> None:
-        self.__medicine_repository = MedicineRepository()
         self.__routine_repository = RoutineRepository()
         self.__routine_items_repository = RoutineItemsRepository()
         self.__crontab_service = CrontabUtil()
@@ -28,13 +26,10 @@ class CreateRoutineUseCase:
                 day_time=routine_item.day_time,
             )._asdict()
 
-            medicine_model = self.__medicine_repository.get_medicine(
-                id=routine_item.medicine_id
-            )
-
             self.__crontab_service.create_routine_job(
                 routine_id=created_routine.id,
-                cylinder_number=medicine_model.cylinder_number,
+                medicine_id=routine_item.medicine_id,
+                patient_id=parameter.patient_id,
                 medicine_quantity=routine_item.medicine_quantity,
                 week_day=routine_item.week_day,
                 day_time=routine_item.day_time,
