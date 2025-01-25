@@ -1,7 +1,6 @@
-from dataclasses import dataclass
+from typing import NamedTuple, Optional
 
 
-@dataclass
-class MAX30102_response:
-    heart_rate: int = None
-    spo2_level: float = None
+class MAX30102Response(NamedTuple):
+    bpm: Optional[int] = None
+    oxygenation_percentage: Optional[float] = None
