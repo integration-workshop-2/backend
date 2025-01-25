@@ -2,7 +2,7 @@ from data.interfaces.patient_faces_interface import PatientFacesInterface
 from datetime import datetime, timedelta, timezone
 from domain.models.patient_faces_model import PatientFacesModel
 from infra.config.db_connection_handler import DBConnectionHandler
-from json import dumps
+from json import dumps, loads
 from typing import List
 from uuid import uuid4
 
@@ -71,7 +71,14 @@ class PatientFacesRepository(PatientFacesInterface):
 
         patient_faces_model_list: List[PatientFacesModel] = []
         for query_data_item in query_data:
-            model = PatientFacesModel(*query_data_item)
+            id, patient_id, face_embedding, created_at, updated_at = query_data_item
+            model = PatientFacesModel(
+                id=id,
+                patient_id=patient_id,
+                face_embedding=loads(face_embedding),
+                created_at=created_at,
+                updated_at=updated_at,
+            )
             patient_faces_model_list.append(model)
 
         return patient_faces_model_list

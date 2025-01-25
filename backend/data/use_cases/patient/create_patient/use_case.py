@@ -21,4 +21,7 @@ class CreatePatientUseCase:
                 patient_id=created_patient.id, face_embedding=face_embedding
             )
 
+        self.__image_processing_util.clear_detected_faces_folder()
+        self.__image_processing_util.clear_posted_images_folder()
+
         return {"success": True, "data": created_patient._asdict()}
