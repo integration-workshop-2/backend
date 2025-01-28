@@ -5,4 +5,5 @@ from .medicine import medicine_bp
 from .non_recognized_patients import non_recognized_patients_bp
 from .patient import patient_bp
 from .patients_vital_signs import patients_vital_signs_bp
-from .vital_signs_sensors import vital_signs_sensors_bp
+
+# from .vital_signs_sensors import vital_signs_sensors_bp

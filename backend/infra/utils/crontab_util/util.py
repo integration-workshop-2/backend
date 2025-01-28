@@ -28,7 +28,7 @@ class CrontabUtil:
 
             return week_days[week_day]
 
-        job_command = f"/home/jhcsoares/utfpr/integration_workshop_2/raspberrypi/.venv/bin/python /home/jhcsoares/utfpr/integration_workshop_2/test_routes.py --medicine_id {medicine_id} --medicine_quantity {str(medicine_quantity)}"
+        job_command = f"/home/jhcsoares/utfpr/integration_workshop_2/raspberrypi/.venv/bin/python /home/jhcsoares/utfpr/integration_workshop_2/test_routes.py --medicine_id {medicine_id} --medicine_quantity {str(medicine_quantity)} --patient_id {patient_id}"
 
         execution_pattern = f"{str(day_time.minute)} {str(day_time.hour)} * * {get_week_day_number(week_day=week_day)}"
 
