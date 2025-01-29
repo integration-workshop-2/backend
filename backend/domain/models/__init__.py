@@ -7,4 +7,3 @@ from .patient_model import PatientModel
 from .patients_vital_signs_model import PatientsVitalSignsModel
 from .routine_item_model import RoutineItemDataModel, RoutineItemModel
 from .routine_model import RoutineModel
-from .routine_trigger_args_model import RoutineTriggerArgsModel
