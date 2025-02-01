@@ -1,5 +1,6 @@
 from .admin_password_interface import AdminPasswordInterface
 from .alarms_interface import AlarmsInterface
+from .cronjob_arguments_interface import CronJobArgumentsInterface
 from .medicine_interface import MedicineInterface
 from .non_recognized_patients_interface import NonRecognizedPatientsInterface
 from .patient_interface import PatientInterface

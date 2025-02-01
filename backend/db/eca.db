@@ -86,3 +86,11 @@ CREATE TABLE IF NOT EXISTS non_recognized_patients(
     updated_at TIMESTAMP NOT NULL,
     FOREIGN KEY (patient_id) REFERENCES patient(id) ON DELETE CASCADE
 );
+
+
+CREATE TABLE IF NOT EXISTS cron_job(
+    execution_pattern CHAR(11) PRIMARY KEY,
+    argument TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL, 
+    updated_at TIMESTAMP NOT NULL
+);
