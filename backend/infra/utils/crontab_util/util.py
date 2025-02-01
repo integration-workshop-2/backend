@@ -4,6 +4,8 @@ from domain.models.cronjob_argument_model import (
     CronJobArgumentModel,
     CronJobMedicineDataModel,
 )
+from domain.models.cronjob_model import CronJobModel
+from infra.repo.cron_job.repository import CronJobRepository
 from json import dumps, loads
 from typing import Dict, List
 
@@ -11,6 +13,7 @@ from typing import Dict, List
 class CrontabUtil:
     def __init__(self) -> None:
         self.__cron = CronTab(user=True)
+        self.__cronjob_repository = CronJobRepository()
 
     def __get_week_day_number(self, week_day: str) -> str:
         week_days = {
@@ -24,6 +27,11 @@ class CrontabUtil:
         }
 
         return week_days[week_day]
+
+    def __get_cronjob_by_execution_pattern(self, execution_pattern: str) -> CronItem:
+        for job in self.__cron:
+            if job.slices.render() == execution_pattern:
+                return job
 
     def __check_execution_pattern_existency(
         self, week_day: str, day_time: time
@@ -92,9 +100,13 @@ class CrontabUtil:
         )
 
         if job:
+            cronjob_model = self.__cronjob_repository.get_cronjob(
+                execution_pattern=job.slices.render()
+            )
+
             existent_routine_info_list = (
                 self.__transform_list_dict_to_cron_job_argument_model_list(
-                    routine_list=loads(job.comment)
+                    routine_list=loads(cronjob_model.argument)
                 )
             )
 
@@ -114,9 +126,14 @@ class CrontabUtil:
                         )
                     )
 
-                    job.command = f"/home/jhcsoares/utfpr/integration_workshop_2/raspberrypi/.venv/bin/python /home/jhcsoares/utfpr/integration_workshop_2/test_routes.py --routines_list {dumps(parsed_existent_routine_info_list)}"
+                    self.__cronjob_repository.update_cronjob(
+                        execution_pattern=job.slices.render(),
+                        argument=dumps(parsed_existent_routine_info_list),
+                    )
 
-                    job.set_comment(dumps(parsed_existent_routine_info_list))
+                    job.command = f"/home/jhcsoares/utfpr/integration_workshop_2/raspberrypi/.venv/bin/python /home/jhcsoares/utfpr/integration_workshop_2/test_routes.py --execution_pattern {job.slices.render()}"
+
+                    job.set_comment(job.slices.render())
 
                     self.__cron.write()
 
@@ -142,9 +159,14 @@ class CrontabUtil:
                 )
             )
 
-            job.command = f"/home/jhcsoares/utfpr/integration_workshop_2/raspberrypi/.venv/bin/python /home/jhcsoares/utfpr/integration_workshop_2/test_routes.py --routines_list {dumps(parsed_existent_routine_info_list)}"
+            self.__cronjob_repository.update_cronjob(
+                execution_pattern=job.slices.render(),
+                argument=dumps(parsed_existent_routine_info_list),
+            )
 
-            job.set_comment(dumps(parsed_existent_routine_info_list))
+            job.command = f"/home/jhcsoares/utfpr/integration_workshop_2/raspberrypi/.venv/bin/python /home/jhcsoares/utfpr/integration_workshop_2/test_routes.py --routines_list {job.slices.render()}"
+
+            job.set_comment(job.slices.render())
 
             self.__cron.write()
 
@@ -166,41 +188,124 @@ class CrontabUtil:
                 )
             )
 
-            job_command = f"/home/jhcsoares/utfpr/integration_workshop_2/raspberrypi/.venv/bin/python /home/jhcsoares/utfpr/integration_workshop_2/test_routes.py --routines_list {parsed_existent_routine_info_list}"
-
             execution_pattern = f"{str(day_time.minute)} {str(day_time.hour)} * * {self.__get_week_day_number(week_day=week_day)}"
 
-            job = self.__cron.new(
-                command=job_command, comment=dumps(parsed_existent_routine_info_list)
+            self.__cronjob_repository.create_cronjob(
+                execution_pattern=execution_pattern,
+                argument=dumps(parsed_existent_routine_info_list),
             )
+
+            job_command = f"/home/jhcsoares/utfpr/integration_workshop_2/raspberrypi/.venv/bin/python /home/jhcsoares/utfpr/integration_workshop_2/test_routes.py --routines_list {execution_pattern}"
+
+            job = self.__cron.new(command=job_command, comment=execution_pattern)
             job.setall(execution_pattern)
             self.__cron.write()
 
     def delete_routine_job_by_routine_id(self, routine_id: str) -> None:
-        for job in self.__cron:
-            routine_info_list: List[CronJobArgumentModel] = loads(job.comment)
+        cron_jobs_list = self.__cronjob_repository.list_cronjobs()
 
-            for routine_info in routine_info_list:
-                if routine_info.routine_id == routine_id:
-                    routine_info_list.remove(routine_info)
+        for cron_job in cron_jobs_list:
+            argument = self.__transform_list_dict_to_cron_job_argument_model_list(
+                loads(cron_job.argument)
+            )
 
-            if not routine_info_list:
-                self.__cron.remove(job)
+            for argument_data in argument[:]:
+                if argument_data.routine_id == routine_id:
+                    argument.remove(argument_data)
+
+            if argument:
+                parsed_argument = (
+                    self.__transform_cron_job_argument_model_list_to_list_dict(
+                        cron_job_argument_model_list=argument
+                    )
+                )
+                self.__cronjob_repository.update_cronjob(
+                    execution_pattern=cron_job.execution_pattern,
+                    argument=dumps(parsed_argument),
+                )
+
+            else:
+                self.__cronjob_repository.delete_cronjob(
+                    execution_pattern=cron_job.execution_pattern
+                )
+                self.__cron.remove(
+                    self.__get_cronjob_by_execution_pattern(
+                        execution_pattern=cron_job.execution_pattern
+                    )
+                )
 
         self.__cron.write()
 
     def delete_routine_job_by_medicine_id(self, medicine_id: str) -> None:
-        for job in self.__cron:
-            comment = f"medicine_id={medicine_id}"
-            if comment in job.comment:
-                self.__cron.remove(job)
+        cron_jobs_list = self.__cronjob_repository.list_cronjobs()
+
+        for cron_job in cron_jobs_list:
+            argument = self.__transform_list_dict_to_cron_job_argument_model_list(
+                loads(cron_job.argument)
+            )
+
+            for argument_data in argument[:]:
+                for medicine_data in argument_data.medicine_data[:]:
+                    if medicine_data.medicine_id == medicine_id:
+                        argument_data.medicine_data.remove(medicine_data)
+
+                if not argument_data.medicine_data:
+                    argument.remove(argument_data)
+
+            if argument:
+                parsed_argument = (
+                    self.__transform_cron_job_argument_model_list_to_list_dict(
+                        cron_job_argument_model_list=argument
+                    )
+                )
+                self.__cronjob_repository.update_cronjob(
+                    execution_pattern=cron_job.execution_pattern,
+                    argument=dumps(parsed_argument),
+                )
+
+            else:
+                self.__cronjob_repository.delete_cronjob(
+                    execution_pattern=cron_job.execution_pattern
+                )
+                self.__cron.remove(
+                    self.__get_cronjob_by_execution_pattern(
+                        execution_pattern=cron_job.execution_pattern
+                    )
+                )
 
         self.__cron.write()
 
     def delete_routine_job_by_patient_id(self, patient_id: str) -> None:
-        for job in self.__cron:
-            comment = f"patient_id={patient_id}"
-            if comment in job.comment:
-                self.__cron.remove(job)
+        cron_jobs_list = self.__cronjob_repository.list_cronjobs()
+
+        for cron_job in cron_jobs_list:
+            argument = self.__transform_list_dict_to_cron_job_argument_model_list(
+                loads(cron_job.argument)
+            )
+
+            for argument_data in argument[:]:
+                if argument_data.patient_id == patient_id:
+                    argument.remove(argument_data)
+
+            if argument:
+                parsed_argument = (
+                    self.__transform_cron_job_argument_model_list_to_list_dict(
+                        cron_job_argument_model_list=argument
+                    )
+                )
+                self.__cronjob_repository.update_cronjob(
+                    execution_pattern=cron_job.execution_pattern,
+                    argument=dumps(parsed_argument),
+                )
+
+            else:
+                self.__cronjob_repository.delete_cronjob(
+                    execution_pattern=cron_job.execution_pattern
+                )
+                self.__cron.remove(
+                    self.__get_cronjob_by_execution_pattern(
+                        execution_pattern=cron_job.execution_pattern
+                    )
+                )
 
         self.__cron.write()

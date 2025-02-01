@@ -2,6 +2,7 @@ from data.interfaces.cronjob_arguments_interface import CronJobArgumentsInterfac
 from datetime import datetime, timedelta, timezone
 from domain.models.cronjob_model import CronJobModel
 from infra.config.db_connection_handler import DBConnectionHandler
+from typing import List
 
 
 class CronJobRepository(CronJobArgumentsInterface):
@@ -19,7 +20,7 @@ class CronJobRepository(CronJobArgumentsInterface):
         cursor = db_connection.cursor()
 
         query = """
-            INSERT INTO cron_job_arguments
+            INSERT INTO cron_job
             (execution_pattern, argument, created_at, updated_at)
             VALUES (%s, %s, %s, %s);
         """
@@ -42,13 +43,13 @@ class CronJobRepository(CronJobArgumentsInterface):
             updated_at=updated_at,
         )
 
-    def get_cronjob(self, execution_pattern: str) -> CronJobModel:
+    def get_cronjob(self, execution_pattern: str) -> CronJobModel | None:
         db_connection = self.db_connection_instace().get_connection()
         cursor = db_connection.cursor()
 
         query = """
             SELECT execution_pattern, argument, created_at, updated_at
-            FROM patient
+            FROM cron_job
             WHERE execution_pattern = %s;
         """
 
@@ -60,7 +61,10 @@ class CronJobRepository(CronJobArgumentsInterface):
         cursor.close()
         db_connection.close()
 
-        return CronJobModel(*query_data)
+        if query_data:
+            return CronJobModel(*query_data)
+
+        return None
 
     def delete_cronjob(self, execution_pattern: str) -> CronJobModel:
         db_connection = self.db_connection_instace().get_connection()
@@ -69,7 +73,7 @@ class CronJobRepository(CronJobArgumentsInterface):
         entity_instance = self.get_cronjob(execution_pattern=execution_pattern)
 
         query = """
-            DELETE FROM cron_job_arguments
+            DELETE FROM cron_job
             WHERE execution_pattern = %s;
         """
 
@@ -88,6 +92,30 @@ class CronJobRepository(CronJobArgumentsInterface):
             updated_at=entity_instance.updated_at,
         )
 
+    def list_cronjobs(self) -> List[CronJobModel]:
+        db_connection = self.db_connection_instace().get_connection()
+        cursor = db_connection.cursor()
+
+        query = """
+            SELECT execution_pattern, argument, created_at, updated_at
+            FROM cron_job;
+        """
+
+        cursor.execute(
+            query,
+        )
+        query_data = cursor.fetchall()
+
+        cursor.close()
+        db_connection.close()
+
+        cron_jobs_model_list: List[CronJobModel] = []
+        for query_data_item in query_data:
+            model = CronJobModel(*query_data_item)
+            cron_jobs_model_list.append(model)
+
+        return cron_jobs_model_list
+
     def update_cronjob(self, execution_pattern: str, argument: str) -> CronJobModel:
         db_connection = self.db_connection_instace().get_connection()
         cursor = db_connection.cursor()
@@ -95,7 +123,7 @@ class CronJobRepository(CronJobArgumentsInterface):
         entity_instance = self.get_cronjob(execution_pattern=execution_pattern)
 
         query = """
-            UPDATE cron_job_arguments
+            UPDATE cron_job
             SET execution_pattern = %s,
             argument = %s,
             created_at = %s,
