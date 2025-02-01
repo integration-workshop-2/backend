@@ -1,5 +1,6 @@
 from .admin_password_model import AdminPasswordModel
 from .alarms_model import AlarmsDataModel, AlarmsModel
+from .cronjob_argument_model import CronJobArgumentModel, CronJobMedicineDataModel
 from .medicine_model import MedicineModel
 from .non_recognized_patients_model import NonRecognizedPatientsModel
 from .patient_faces_model import PatientFacesModel
