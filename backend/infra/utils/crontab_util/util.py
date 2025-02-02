@@ -4,7 +4,6 @@ from domain.models.cronjob_argument_model import (
     CronJobArgumentModel,
     CronJobMedicineDataModel,
 )
-from domain.models.cronjob_model import CronJobModel
 from infra.repo.cron_job.repository import CronJobRepository
 from json import dumps, loads
 from typing import Dict, List

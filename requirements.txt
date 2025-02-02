@@ -13,3 +13,4 @@ python-crontab==3.2.0
 selenium==4.28.1
 selenium-wire==5.1.0
 blinker==1.7.0
+crontab==1.0.1
