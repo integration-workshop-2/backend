@@ -1,56 +1,62 @@
-import fcntl
-import os
-
 from data.parameters.routine_trigger.execute_routine_trigger.parameter import (
     RoutineTriggerArgsParameter,
 )
+from domain.models.cronjob_argument_model import CronJobArgumentModel
+from infra.hardware.control_motor.control_motor import ControlMotor
+from infra.repo.cron_job.repository import CronJobRepository
+from infra.repo.medicine_repository.repository import MedicineRepository
 from infra.repo.non_recognized_patients_repository.repository import (
     NonRecognizedPatientsRepository,
 )
 from infra.utils.browser_util.util import BrowserUtil
+from json import loads
+from typing import List
 
 
 class ExecuteRoutineTriggerUseCase:
     def __init__(self) -> None:
-        self.__non_recognized_patients_repository = NonRecognizedPatientsRepository()
         self.__browser_util = BrowserUtil()
-        self.__lock_file_path = (
-            "/home/jhcsoares/utfpr/integration_workshop_2/patient.lock"
-        )
+        self.__cronjob_repository = CronJobRepository()
+        self.__medicine_repository = MedicineRepository()
+        self.__non_recognized_patients_repository = NonRecognizedPatientsRepository()
 
     def execute(self, parameter: RoutineTriggerArgsParameter) -> None:
-        self.__patient_id = parameter.patient_id
-        self.__medicine_id = parameter.medicine_id
-        self.__medicine_quantity = parameter.medicine_quantity
+        cronjob = self.__cronjob_repository.get_cronjob(
+            execution_pattern=parameter.execution_pattern
+        )
 
-        if not os.path.exists(self.__lock_file_path):
-            self.__create_lock_file()
-            self.__execute_routine()
+        routines_list: List[CronJobArgumentModel] = []
 
-        else:
-            pass
+        for info in loads(cronjob.argument):
+            routines_list.append(CronJobArgumentModel(**info))
 
-    def __create_lock_file(self) -> None:
-        with open(self.__lock_file_path, "w") as file:
-            fcntl.flock(file, fcntl.LOCK_EX)
-            file.write(f"{self.__patient_id}")
-            file.flush()
+        for patient_routine in routines_list:
+            self.__browser_util.open_page(endpoint="index.html")
 
-    def __execute_routine(self) -> None:
-        self.__browser_util.open_page("index.html")
+            response = None
 
-        response = None
+            while not response:
+                response = self.__browser_util.get_request_info(
+                    endpoint="recognize_images"
+                )
 
-        while not response:
-            response = self.__browser_util.get_request_info(endpoint="recognize_images")
+            if not response["success"]:
+                self.__non_recognized_patients_repository.create_non_recognized_patient(
+                    patient_id=patient_routine.patient_id
+                )
 
-        if not response["success"]:
-            self.__non_recognized_patients_repository.create_non_recognized_patient(
-                patient_id=self.__patient_id
-            )
+            else:
+                for medicine_info in patient_routine.medicine_data:
 
-        else:
-            pass
+                    current_medicine = self.__medicine_repository.get_medicine(
+                        id=medicine_info.medicine_id
+                    )
 
-        self.__browser_util.close_page()
-        os.remove(self.__lock_file_path)
+                    cylinder_number = current_medicine.cylinder_number
+
+                    control_motor = ControlMotor(cylinder_number=cylinder_number)
+
+                    for _ in medicine_info.medicine_quantity:
+                        control_motor.execute_controlled_movement()
+
+            self.__browser_util.close_page()

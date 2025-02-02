@@ -1,7 +1,5 @@
-from typing import NamedTuple
+from typing import List, NamedTuple
 
 
 class RoutineTriggerArgsParameter(NamedTuple):
-    patient_id: str
-    medicine_id: str
-    medicine_quantity: int
+    execution_pattern: str
