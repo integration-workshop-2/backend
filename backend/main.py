@@ -9,8 +9,7 @@ from server.routes.non_recognized_patients import non_recognized_patients_bp
 from server.routes.patient import patient_bp
 from server.routes.patients_vital_signs import patients_vital_signs_bp
 from server.routes.routine import routine_bp
-
-# from server.routes.vital_signs_sensors import vital_signs_sensors_bp
+from server.routes.vital_signs_sensors import vital_signs_sensors_bp
 
 
 app = Flask(__name__)
@@ -24,7 +23,7 @@ app.register_blueprint(blueprint=non_recognized_patients_bp, url_prefix="/api")
 app.register_blueprint(blueprint=patient_bp, url_prefix="/api")
 app.register_blueprint(blueprint=patients_vital_signs_bp, url_prefix="/api")
 app.register_blueprint(blueprint=routine_bp, url_prefix="/api")
-# app.register_blueprint(blueprint=vital_signs_sensors_bp, url_prefix="/api")
+app.register_blueprint(blueprint=vital_signs_sensors_bp, url_prefix="/api")
 
 
 if __name__ == "__main__":
