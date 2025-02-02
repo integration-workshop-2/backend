@@ -42,9 +42,8 @@ def get_patient(patient_id: UUID):
 
 @patient_bp.route("/patients", methods=["GET"])
 def list_patients():
-    event: Dict = request.json
     use_case = ListPatientsUseCase()
-    parameter = ListPatientsParameter(patient_name=event.get("patient_name"))
+    parameter = ListPatientsParameter(patient_name="")
     response = use_case.execute(parameter=parameter)
     return jsonify(response), 200
 
