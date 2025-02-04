@@ -34,12 +34,12 @@ class Motor:
 
     def __get_control_pins_by_cylinder_number(self, cylinder_number: int) -> List[int]:
         control_pins_by_cylinder_number_dict = {
-            1: [1, 2, 3, 4],
-            2: [5, 6, 7, 8],
-            3: [9, 10, 11, 12],
+            1: [6, 13, 19, 26],
+            2: [18, 23, 24, 25],
+            3: [12, 16, 20, 21],
         }
 
-        return control_pins_by_cylinder_number_dict.get(key=cylinder_number)
+        return control_pins_by_cylinder_number_dict.get(cylinder_number)
 
     def set_pin_state(self, pin: int, state: int) -> None:
         GPIO.output(channel=pin, value=state)

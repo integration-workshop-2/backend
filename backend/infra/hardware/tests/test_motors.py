@@ -1,4 +1,4 @@
-from actuators.motor import Motor
+from infra.hardware.motor.motor import Motor
 from time import sleep
 
 motor_1 = Motor(control_pins=[6, 13, 19, 26])
