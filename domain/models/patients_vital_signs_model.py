@@ -7,5 +7,6 @@ class PatientsVitalSignsModel(NamedTuple):
     patient_id: str
     bpm: int
     oxygenation_percentage: int
+    temperature: float
     created_at: datetime
     updated_at: datetime

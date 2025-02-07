@@ -17,6 +17,7 @@ class CreatePatientVitalSignsUseCase:
                 patient_id=parameter.patient_id,
                 bpm=parameter.bpm,
                 oxygenation_percentage=parameter.oxygenation_percentage,
+                temperature=parameter.temperature,
             )
         )
 

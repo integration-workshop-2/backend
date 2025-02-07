@@ -17,14 +17,14 @@ class PatientsVitalSignsRepository(PatientsVitalSignalsInterface):
         return cls.__db_connection
 
     def create_patient_vital_signs(
-        self, patient_id: str, bpm: int, oxygenation_percentage: int
+        self, patient_id: str, bpm: int, oxygenation_percentage: int, temperature: float
     ) -> PatientsVitalSignsModel:
         db_connection = self.db_connection_instace().get_connection()
         cursor = db_connection.cursor()
 
         query = """
             INSERT INTO patients_vital_signs
-            (id, patient_id, bpm, oxygenation_percentage, created_at, updated_at)
+            (id, patient_id, bpm, oxygenation_percentage, temperature, created_at, updated_at)
             VALUES (%s, %s, %s, %s, %s, %s);
         """
 
@@ -32,7 +32,15 @@ class PatientsVitalSignsRepository(PatientsVitalSignalsInterface):
         created_at = datetime.now(timezone.utc) - timedelta(hours=3)
         updated_at = datetime.now(timezone.utc) - timedelta(hours=3)
 
-        values = (id, patient_id, bpm, oxygenation_percentage, created_at, updated_at)
+        values = (
+            id,
+            patient_id,
+            bpm,
+            oxygenation_percentage,
+            temperature,
+            created_at,
+            updated_at,
+        )
 
         cursor.execute(query, values)
         db_connection.commit()
@@ -45,6 +53,7 @@ class PatientsVitalSignsRepository(PatientsVitalSignalsInterface):
             patient_id=patient_id,
             bpm=bpm,
             oxygenation_percentage=oxygenation_percentage,
+            temperature=temperature,
             created_at=created_at,
             updated_at=updated_at,
         )
