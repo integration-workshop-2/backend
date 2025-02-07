@@ -64,6 +64,7 @@ CREATE TABLE IF NOT EXISTS patients_vital_signs(
     patient_id CHAR(36),
     bpm TINYINT UNSIGNED,
     oxygenation_percentage TINYINT UNSIGNED,
+    temperature TINYINT UNSIGNED,
     created_at TIMESTAMP NOT NULL, 
     updated_at TIMESTAMP NOT NULL,
     FOREIGN KEY (patient_id) REFERENCES patient(id) ON DELETE CASCADE
