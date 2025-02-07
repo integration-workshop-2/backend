@@ -9,8 +9,6 @@ from server.routes.non_recognized_patients import non_recognized_patients_bp
 from server.routes.patient import patient_bp
 from server.routes.patients_vital_signs import patients_vital_signs_bp
 from server.routes.routine import routine_bp
-from server.routes.vital_signs_sensors import vital_signs_sensors_bp
-
 
 app = Flask(__name__)
 CORS(app, origins="*")
@@ -23,8 +21,7 @@ app.register_blueprint(blueprint=non_recognized_patients_bp, url_prefix="/api")
 app.register_blueprint(blueprint=patient_bp, url_prefix="/api")
 app.register_blueprint(blueprint=patients_vital_signs_bp, url_prefix="/api")
 app.register_blueprint(blueprint=routine_bp, url_prefix="/api")
-app.register_blueprint(blueprint=vital_signs_sensors_bp, url_prefix="/api")
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="10.42.0.1", port=5000)

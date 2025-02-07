@@ -2,7 +2,6 @@ from data.parameters.routine_trigger.execute_routine_trigger.parameter import (
     RoutineTriggerArgsParameter,
 )
 from domain.models.cronjob_argument_model import CronJobArgumentModel
-from infra.hardware.control_motor.control_motor import ControlMotor
 from infra.repo.cron_job.repository import CronJobRepository
 from infra.repo.medicine_repository.repository import MedicineRepository
 from infra.repo.non_recognized_patients_repository.repository import (
@@ -31,32 +30,43 @@ class ExecuteRoutineTriggerUseCase:
             routines_list.append(CronJobArgumentModel(**info))
 
         for patient_routine in routines_list:
-            self.__browser_util.open_page(endpoint="index.html")
+            # self.__browser_util.open_page(endpoint="index.html")
 
-            response = None
+            # response = None
 
-            while not response:
-                response = self.__browser_util.get_request_info(
-                    endpoint="recognize_images"
-                )
+            # while not response:
+            #     response = self.__browser_util.get_request_info(
+            #         endpoint="recognize_images"
+            #     )
+            import requests
+            import time
 
-            if not response["success"]:
-                self.__non_recognized_patients_repository.create_non_recognized_patient(
-                    patient_id=patient_routine.patient_id
-                )
+            for _ in range(20):
+                requests.get(url="http://10.42.0.2/capture")
 
-            else:
-                for medicine_info in patient_routine.medicine_data:
+            response = requests.get(
+                url=f"http://10.42.0.1:5000/api/recognize_images/{patient_routine.patient_id}"
+            ).json()
 
-                    current_medicine = self.__medicine_repository.get_medicine(
-                        id=medicine_info.medicine_id
-                    )
+            print(response)
 
-                    cylinder_number = current_medicine.cylinder_number
+            # if not response["success"]:
+            #     self.__non_recognized_patients_repository.create_non_recognized_patient(
+            #         patient_id=patient_routine.patient_id
+            #     )
 
-                    control_motor = ControlMotor(cylinder_number=cylinder_number)
+            # else:
+            #     for medicine_info in patient_routine.medicine_data:
 
-                    for _ in medicine_info.medicine_quantity:
-                        control_motor.execute_controlled_movement()
+            #         current_medicine = self.__medicine_repository.get_medicine(
+            #             id=medicine_info.medicine_id
+            #         )
 
-            self.__browser_util.close_page()
+            #         cylinder_number = current_medicine.cylinder_number
+
+            #         control_motor = ControlMotor(cylinder_number=cylinder_number)
+
+            #         for _ in medicine_info.medicine_quantity:
+            #             control_motor.execute_controlled_movement()
+
+            # self.__browser_util.close_page()
