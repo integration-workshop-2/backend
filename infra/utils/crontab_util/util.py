@@ -130,7 +130,7 @@ class CrontabUtil:
                         argument=dumps(parsed_existent_routine_info_list),
                     )
 
-                    job.command = f"DISPLAY=:0 /home/jhcsoares/utfpr/integration_workshop_2/raspberrypi/.venv/bin/python /home/jhcsoares/utfpr/integration_workshop_2/test_routes.py --execution_pattern {job.slices.render()}"
+                    job.command = f'DISPLAY=:0 /home/jhcsoares/utfpr/integration_workshop_2/backend/.venv/bin/python /home/jhcsoares/utfpr/integration_workshop_2/backend/execute_routine_trigger.py --execution_pattern "{job.slices.render()}"'
 
                     job.set_comment(job.slices.render())
 
