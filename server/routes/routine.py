@@ -7,7 +7,6 @@ from data.parameters.routine.create_routine.parameter import (
 from data.use_cases.routine.delete_routine.use_case import DeleteRoutineUseCase
 from data.parameters.routine.delete_routine.parameter import DeleteRoutineParameter
 from data.use_cases.routine.list_routines.use_case import ListRoutinesUseCase
-from data.parameters.routine.list_routines.parameter import ListRoutinesParameter
 from data.use_cases.routine.update_routine.use_case import UpdateRoutineUseCase
 from data.parameters.routine.update_routine.parameter import (
     UpdateRoutineItemParameter,
@@ -58,7 +57,6 @@ def delete_routine(routine_id: UUID):
 
 @routine_bp.route("/list_routines", methods=["GET"])
 def list_routines():
-    event: Dict = request.json
     use_case = ListRoutinesUseCase()
     response = use_case.execute()
     return jsonify(response), 200
