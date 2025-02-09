@@ -25,7 +25,7 @@ def update_admin_password():
     return jsonify(response), 200
 
 
-@admin_password_bp.route("/validate_admin_password", methods=["GET"])
+@admin_password_bp.route("/validate_admin_password", methods=["POST"])
 def validate_admin_password():
     event: Dict = request.json
     use_case = ValidateAdminPasswordUseCase()

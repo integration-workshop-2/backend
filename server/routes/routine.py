@@ -56,15 +56,11 @@ def delete_routine(routine_id: UUID):
     return jsonify(response), 200
 
 
-@routine_bp.route("/list_routines", methods=["POST"])
+@routine_bp.route("/list_routines", methods=["GET"])
 def list_routines():
     event: Dict = request.json
     use_case = ListRoutinesUseCase()
-    parameter = ListRoutinesParameter(
-        patient_name=event.get("patient_name"),
-        routine_description=event.get("routine_description"),
-    )
-    response = use_case.execute(parameter=parameter)
+    response = use_case.execute()
     return jsonify(response), 200
 
 

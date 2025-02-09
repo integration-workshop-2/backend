@@ -1,4 +1,3 @@
-from data.parameters.routine.list_routines.parameter import ListRoutinesParameter
 from datetime import datetime, time
 from domain.models.routine_item_model import RoutineItemDataModel
 from infra.repo.routine_items_repository.repository import RoutineItemsRepository
@@ -9,11 +8,8 @@ class ListRoutinesUseCase:
     def __init__(self) -> None:
         self.__routine_items_repository = RoutineItemsRepository()
 
-    def execute(self, parameter: ListRoutinesParameter) -> Dict:
-        routine_items_data_list = self.__routine_items_repository.list_routine_items(
-            patient_name=parameter.patient_name,
-            routine_description=parameter.routine_description,
-        )
+    def execute(self) -> Dict:
+        routine_items_data_list = self.__routine_items_repository.list_routine_items()
 
         return {
             "sucess": True,
