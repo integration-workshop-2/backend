@@ -62,8 +62,8 @@ CREATE TABLE IF NOT EXISTS routine_items(
 CREATE TABLE IF NOT EXISTS patients_vital_signs(
     id CHAR(36) PRIMARY KEY,
     patient_id CHAR(36),
-    bpm TINYINT UNSIGNED,
-    oxygenation_percentage TINYINT UNSIGNED,
+    bpm FLOAT,
+    oxygenation_percentage FLOAT,
     temperature FLOAT,
     created_at TIMESTAMP NOT NULL, 
     updated_at TIMESTAMP NOT NULL,

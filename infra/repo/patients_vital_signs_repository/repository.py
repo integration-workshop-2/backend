@@ -25,7 +25,7 @@ class PatientsVitalSignsRepository(PatientsVitalSignalsInterface):
         query = """
             INSERT INTO patients_vital_signs
             (id, patient_id, bpm, oxygenation_percentage, temperature, created_at, updated_at)
-            VALUES (%s, %s, %s, %s, %s, %s);
+            VALUES (%s, %s, %s, %s, %s, %s, %s);
         """
 
         id = str(uuid4())
