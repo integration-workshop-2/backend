@@ -24,11 +24,10 @@ class RecognizeImageUseCase:
                     face_embeddings_list_1=face_embeddings,
                     face_embeddings_list_2=patient_face_embeddings.face_embedding,
                 ):
-                    self.__image_processing_util.clear_detected_faces_folder()
+
                     self.__image_processing_util.clear_posted_images_folder()
                     return {"success": True}
 
-        self.__image_processing_util.clear_detected_faces_folder()
         self.__image_processing_util.clear_posted_images_folder()
 
         return {"success": False}

@@ -130,7 +130,7 @@ class CrontabUtil:
                         argument=dumps(parsed_existent_routine_info_list),
                     )
 
-                    job.command = f'DISPLAY=:0 /home/jhcsoares/utfpr/integration_workshop_2/backend/.venv/bin/python /home/jhcsoares/utfpr/integration_workshop_2/backend/execute_routine_trigger.py --execution_pattern "{job.slices.render()}"'
+                    job.command = f'DISPLAY=:0 /home/jhcsoares/utfpr/integration_workshop_2/backend/.venv/bin/python /home/jhcsoares/utfpr/integration_workshop_2/backend/backend/execute_routine_trigger.py --execution_pattern "{job.slices.render()}"'
 
                     job.set_comment(job.slices.render())
 
@@ -163,7 +163,7 @@ class CrontabUtil:
                 argument=dumps(parsed_existent_routine_info_list),
             )
 
-            job.command = f"DISPLAY=:0 /home/jhcsoares/utfpr/integration_workshop_2/raspberrypi/.venv/bin/python /home/jhcsoares/utfpr/integration_workshop_2/execute_routine_trigger.py --routines_list {job.slices.render()}"
+            job.command = f'DISPLAY=:0 /home/jhcsoares/utfpr/integration_workshop_2/backend/.venv/bin/python /home/jhcsoares/utfpr/integration_workshop_2/backend/execute_routine_trigger.py --execution_pattern "{job.slices.render()}"'
 
             job.set_comment(job.slices.render())
 
@@ -194,7 +194,7 @@ class CrontabUtil:
                 argument=dumps(parsed_existent_routine_info_list),
             )
 
-            job_command = f"DISPLAY=:0 /home/jhcsoares/utfpr/integration_workshop_2/raspberrypi/.venv/bin/python /home/jhcsoares/utfpr/integration_workshop_2/execute_routine_trigger.py --routines_list {execution_pattern}"
+            job_command = f'DISPLAY=:0 /home/jhcsoares/utfpr/integration_workshop_2/backend/.venv/bin/python /home/jhcsoares/utfpr/integration_workshop_2/backend/execute_routine_trigger.py --execution_pattern "{execution_pattern}"'
 
             job = self.__cron.new(command=job_command, comment=execution_pattern)
             job.setall(execution_pattern)
