@@ -38,8 +38,6 @@ class ImageProcessingUtil:
 
         similarity_score = cosine(face_embeddings_list_1, face_embeddings_list_2)
 
-        print(similarity_score)
-
         if similarity_score < threshold:
             return True
         else:
