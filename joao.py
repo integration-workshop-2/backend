@@ -15,8 +15,15 @@ import requests
 #     },
 # )
 
+# print(
+#     requests.get(
+#         "http://10.42.0.1:5000/api/list_patient_vital_signs/535c97d7-30f5-494d-9ec6-52898ea41e30"
+#     ).json()
+# )
 
 requests.get("http://10.42.0.3:5000/api/control_motor/1")
+# requests.get("http://10.42.0.3:5000/api/control_motor/2")
+# requests.get("http://10.42.0.3:5000/api/control_motor/3")
 
 # requests.post(
 #     url="http://10.42.0.1:5000/api/patients", json={"name": "Joao Pedro dos Reis"}

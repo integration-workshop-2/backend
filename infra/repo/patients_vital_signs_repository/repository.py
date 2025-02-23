@@ -87,7 +87,8 @@ class PatientsVitalSignsRepository(PatientsVitalSignalsInterface):
             SELECT id, patient_id, bpm, oxygenation_percentage, temperature, created_at, updated_at
             FROM patients_vital_signs
             WHERE patient_id = %s
-            ORDER by created_at ASC;
+            ORDER by created_at DESC
+            LIMIT 10;
         """
         values = (patient_id,)
 

@@ -23,4 +23,6 @@ class ListPatientVitalSignsUseCase:
             parsed_patient_vital_signs = patient_vital_signs._asdict()
             data_list.append(parsed_patient_vital_signs)
 
+        data_list.reverse()
+
         return {"success": True, "data": data_list}
