@@ -16,7 +16,7 @@ import requests
 # )
 
 
-requests.get("http://10.42.0.3:5000/api/control_motor/2")
+requests.get("http://10.42.0.3:5000/api/control_motor/1")
 
 # requests.post(
 #     url="http://10.42.0.1:5000/api/patients", json={"name": "Joao Pedro dos Reis"}

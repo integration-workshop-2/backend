@@ -63,7 +63,7 @@ class PatientsVitalSignsRepository(PatientsVitalSignalsInterface):
         cursor = db_connection.cursor()
 
         query = """
-            SELECT id, patient_id, bpm, oxygenation_percentage, created_at, updated_at
+            SELECT id, patient_id, bpm, oxygenation_percentage, temperature, created_at, updated_at
             FROM patients_vital_signs
             WHERE id = %s;
         """
@@ -84,7 +84,7 @@ class PatientsVitalSignsRepository(PatientsVitalSignalsInterface):
         cursor = db_connection.cursor()
 
         query = """
-            SELECT id, patient_id, bpm, oxygenation_percentage, created_at, updated_at
+            SELECT id, patient_id, bpm, oxygenation_percentage, temperature, created_at, updated_at
             FROM patients_vital_signs
             WHERE patient_id = %s
             ORDER by created_at ASC;

@@ -50,7 +50,7 @@ class AlarmsRepository(AlarmsInterface):
         cursor = db_connection.cursor()
 
         query = """
-            SELECT p.name as patient_name, pvs.bpm, pvs.oxygenation_percentage, a.created_at as date
+            SELECT p.name as patient_name, pvs.bpm, pvs.oxygenation_percentage, pvs.temperature, a.created_at as date
             FROM alarms a
             INNER JOIN patients_vital_signs pvs
             ON a.patient_vital_signs_id = pvs.id

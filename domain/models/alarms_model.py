@@ -13,4 +13,5 @@ class AlarmsDataModel(NamedTuple):
     patient_name: str
     bpm: int
     oxygenation_percentage: int
+    temperature: float
     date: datetime
